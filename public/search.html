@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>search: </title>
+  <link rel="stylesheet" href="/search.css"/>
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body id = "body">
+<h1>meleetrack</h1>
+
+<button id="returnHome" onclick="window.location.href ='/'" style="width: 20%; pointer-events: all; margin: auto;">return to search</button>
+<br><br>
+
+<script>
+    function getCharacterFromResponse(res){
+      let character = "";
+        if(typeof res !== 'undefined'){
+          for(let i = 18; res.body[i] != "}"; i++){
+          if(res.body[i] == '"'){
+            continue;
+          }
+          character += res.body[i];
+        }
+        return character;
+      }
+    }
+    function getMainCharacterFromString(row){
+      if((typeof row !== 'undefined' && row.length != 2)){
+        if(row.charAt(15) !== '\\'){
+          let indexOfMaxNum = 0;
+          let mostPlayedCharacter = "";
+          let max=0;
+        for(let i=0; row.charAt(i) != "}"; i++){
+          //entire loop's purpose is to iterate through the string, find the most times a character has been played, and return the most played character name
+          if((!isNaN(parseInt(row.charAt(i))))){ //if the character at index i is a number
+            let indexOfNumStart = i;
+            let indexOfNumEnd = i+1;
+            let tempString = "";
+            while(!isNaN(parseInt(row.charAt(indexOfNumEnd)))){ //finds last index of the number
+              indexOfNumEnd=indexOfNumEnd+1;
+            }
+            for(; indexOfNumStart<indexOfNumEnd; indexOfNumStart++){
+              tempString = tempString + row.charAt(indexOfNumStart);
+            }
+            if (parseInt(tempString)>max){
+              max = parseInt(tempString);
+              indexOfMaxNum = i;
+            }
+          }
+          //console.log(row.charAt(i));
+        }
+        while(row.charAt(indexOfMaxNum) != "/"){
+          if(row.charAt(indexOfMaxNum).match(/[a-z]/i)){
+          mostPlayedCharacter =  row.charAt(indexOfMaxNum) + mostPlayedCharacter;
+          }
+          indexOfMaxNum = indexOfMaxNum - 1;
+        }
+        return mostPlayedCharacter;
+      }
+        }
+        //if the characters value is defined and not empty
+        
+    else{
+      return "none";
+    }
+}
+  const baseUrl = window.location.href;
+  window.addEventListener('load', getSearchResults);
+  window.addEventListener('keydown', (event) => {if (event.key == "Backspace"){window.location.pathname="/";}});
+  window.addEventListener('keydown', (event) => {console.log(Number.isInteger(parseInt(event.key))); if (Number.isInteger(parseInt(event.key))){window.location.pathname="/stats/"+document.getElementById("button"+(parseInt(event.key)-1)).value}});
+  async function getSearchResults(){
+      const res = await fetch(baseUrl,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          parcel: window.location.pathname.split('/')[2]
+        })
+      })
+      .then(res => {
+        if (!res.ok){
+          
+        }
+        return res.json();
+      });
+      if(res.playerID.length == 1){
+        window.location.href ='/stats/'+res.playerID;
+      }
+      else if(res.playerID.length == 0){
+        alert("No players found in the database based on that search.")
+        window.location.href ='/';
+      }
+      for (var i = 0; i<res.tag.length; i++){
+        var btn = document.createElement("button");
+        var t = document.createTextNode(res.tag[i]);
+        btn.appendChild(t);
+        document.body.appendChild(btn);
+        btn.setAttribute('id', 'button'+i);
+        btn.setAttribute('value', res.playerID[i]);
+        document.addEventListener('click', function(e){
+          if(e.target.closest("button").id != "returnHome"){
+            window.location.pathname = "/stats/"+e.target.closest("button").value;
+          }
+        });
+        // var img = document.createElement("img");
+        if(res.characters[i] != undefined || res.characters[i] != ""){
+          if(getMainCharacterFromString(res.characters[i]) != "none"){
+            // img.src = "/images/"+getMainCharacterFromString(res.characters[i])+".png"
+            btn.style.backgroundImage = "url(/images/"+getMainCharacterFromString(res.characters[i])+".png)"; 
+            btn.style.backgroundRepeat = 'no-repeat';
+            btn.style.backgroundPosition = "bottom center";
+            btn.style.backgroundSize = "auto 40%";
+            btn.style.paddingBottom = "1.2em";
+            btn.style.top = "-0.46em";
+          }
+        }
+        // document.getElementById('body').appendChild(img);
+        // img.setAttribute('id', 'img'+i);
+      }
+    }
+
+</script>
+</body>
+</html>

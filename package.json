@@ -1,0 +1,24 @@
+{
+  "name": "meleetrack",
+  "version": "1.0.0",
+  "description": "Statistics tracker for competitors of Super Smash Bros. Melee using the database provided by smashdata.gg ",
+  "main": "./assets/js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js"
+  },
+  "author": "justincarew",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "i18n-iso-countries": "^7.7.0",
+    "sql.js": "^1.8.0",
+    "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "jquery": "^3.7.1",
+    "nodemon": "^3.0.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4"
+  }
+}

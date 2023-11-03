@@ -1,0 +1,180 @@
+@keyframes fade-down{
+    0%{
+        opacity: 0;
+        transform: translateY(-50%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(50%);
+    }
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.body-wrapper{
+    transform: translateY(50%);
+    animation: fade-down 1s;
+}
+
+h1{
+    color: #D7CEB2;
+    font-family: Verdana, Tahoma, sans-serif;
+    padding-bottom: 0px;
+    margin-bottom: 20px;
+}
+
+h2{
+    color: #DAD2BC;
+    font-family: Verdana, Tahoma, sans-serif;
+    font-size: 12px;
+}
+
+p{
+    color: #F5F1ED;
+    font-size: 20px;
+    font-family: Verdana, Tahoma, sans-serif;
+    margin: block;
+    margin-bottom: -10px;
+}
+
+a{
+    color: inherit;
+    text-decoration: inherit;
+}
+
+subtext{
+    color: #F5F1ED;
+    font-size: 10px;
+    font-family: Verdana, Tahoma, sans-serif;
+    margin: block;
+    margin-top: -20px;
+}
+
+body{
+    background: linear-gradient(-45deg, #252323, #393D46, #1a1a1f, #2c2e38);
+	background-size: 400% 400%;
+	animation: gradient 28s ease infinite;
+	height: 100vh;
+}
+
+input{
+    margin: auto !important;
+    text-align: center;
+    resize: none !important;
+    color: white;
+    font-size: 32px;
+    font-family: Verdana, Tahoma, sans-serif;
+    height: 40px;
+    width: 50% !important;
+    white-space: nowrap;
+    background-color: #70798C;
+    font-weight: 50%;
+}
+
+body{
+    text-align: center;
+    font-size: x-large;
+    background-position-y: center;
+}
+
+
+button{
+    margin: auto;
+    display: block;
+    font-weight: bold;
+    font-size: 30px;
+    background-color: #141414e8;
+    border-radius: 100px;
+    color: white;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Verdana, Tahoma, sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    height: 80px;
+    margin-bottom: 10px;
+    margin-right: 10px;
+    position: relative;
+}
+
+
+button:empty{
+    display: none !important;
+}
+
+::placeholder{
+    color: white;
+}
+
+img{
+    width: 40px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img[src=""]{
+    display: none;
+    visibility: hidden;
+    outline: none;
+}
+
+img[src="/images/null.png"]{
+    display: none;
+    visibility: hidden;
+    outline: none;
+}
+
+img[src="/images/none.png"]{
+    display: none;
+    visibility: hidden;
+    outline: none;
+}
+
+img[src="/images/uparrow.png"]{
+    margin-top: 1%;
+    width: 4% !important;
+    filter: grayscale(100%) invert(100%);
+}
+
+img[src="/images/smashball.png"]{
+    filter: grayscale(100%) invert(100%) brightness(100%);
+}
+
+button[id="returnHome"]{
+    background-color: #141414e8;
+    border-radius: 100px;
+    box-shadow: #1C2321 0 -25px 18px -14px inset,black 0 1px 2px,black 0 2px 4px,black 0 4px 8px,#1C2321 0 8px 16px,#1C2321 0 16px 32px;
+    color: #D7CEB2;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Verdana, Tahoma, sans-serif;
+    padding: 7px 20px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 250ms;
+    border: 0;
+    font-size: 16px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    line-height: 0em;
+    padding: 0;
+  }
+  
+  button:hover {
+    transform: scale(1.05);
+  }

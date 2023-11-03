@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>stats</title>
+  <link rel="stylesheet" href="/stats.css"/>
+  <link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body>
+<h1>meleetrack</h1>
+
+<button id="returnHome" onclick="window.location.href ='/'" style="width: 20%; pointer-events: all; margin: auto;">return to search</button>
+<br><br>
+<div class="statsContainer" id="statsContainer">
+  <div id="bufferContainer">
+  <div class="bufferWheelBG"><div class="bufferWheel">
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    </div></div>
+</div>
+<p id="playerName" style="z-index: 1; font-size: 5em; color:white; margin-bottom: -5px;"></p>
+<img id="playerCountryFlag" src="" style="z-index: -1; position: relative; width: 60px; margin-bottom: -20px;"/>
+<img id="characterMainImage" src="" style="z-index: -1; position: relative; height: 45px; margin-bottom: -20px;"/>
+
+<p id="playerCountry" style="margin-bottom: -25px;"></p>
+<p id="playerState" style="margin-bottom: 5px;"></p>
+
+<br>
+<span id="stat1" style="margin-bottom: 30px; font-weight: bold;"></span><span id="setCount" style="margin-bottom: 30px; font-weight: normal;"></span><span id="winRate" style="margin-bottom: 30px; font-weight: lighter;"></span>
+<br>
+<span id="stat2" style="margin-bottom: 30px; font-weight: bold;"></span><span id="onlineTournaments" style="margin-bottom: 30px; font-weight: normal;"></span><span id="onlineRate" style="margin-bottom: 30px; font-weight: lighter;"></span>
+<br>
+<span id="special" style="margin-top: 30px; margin-bottom: 30px; font-weight: normal; text-align: center;"></span>
+<span id="description" style="margin-top: 30px; margin-bottom: 30px; font-weight: normal; text-align: center;"></span>
+<span id="previousTags" style="margin-top: 30px; margin-bottom: 30px; font-weight: normal; text-align: center;"></span>
+<br><br>
+</div>
+
+
+<script>
+    console.log(window.location.href);
+    console.log(window.location.pathname);
+    console.log(window.location.pathname.split('/')[2]);
+    function getCharacterFromResponse(res){
+      let character = "";
+        if(typeof res !== 'undefined'){
+          for(let i = 18; res.body[i] != "}"; i++){
+          if(res.body[i] == '"'){
+            continue;
+          }
+          character += res.body[i];
+        }
+        return character;
+      }
+    }
+    function getMainCharacterFromString(row){
+      if((typeof row !== 'undefined' && row.length != 2)){
+        if(row.charAt(15) !== '\\'){
+          let indexOfMaxNum = 0;
+          let mostPlayedCharacter = "";
+          let max=0;
+        for(let i=0; row.charAt(i) != "}"; i++){
+          //entire loop's purpose is to iterate through the string, find the most times a character has been played, and return the most played character name
+          if((!isNaN(parseInt(row.charAt(i))))){ //if the character at index i is a number
+            let indexOfNumStart = i;
+            let indexOfNumEnd = i+1;
+            let tempString = "";
+            while(!isNaN(parseInt(row.charAt(indexOfNumEnd)))){ //finds last index of the number
+              indexOfNumEnd=indexOfNumEnd+1;
+            }
+            for(; indexOfNumStart<indexOfNumEnd; indexOfNumStart++){
+              tempString = tempString + row.charAt(indexOfNumStart);
+            }
+            if (parseInt(tempString)>max){
+              max = parseInt(tempString);
+              indexOfMaxNum = i;
+            }
+          }
+          //console.log(row.charAt(i));
+        }
+        while(row.charAt(indexOfMaxNum) != "/"){
+          if(row.charAt(indexOfMaxNum).match(/[a-z]/i)){
+          mostPlayedCharacter =  row.charAt(indexOfMaxNum) + mostPlayedCharacter;
+          }
+          indexOfMaxNum = indexOfMaxNum - 1;
+        }
+        return mostPlayedCharacter;
+      }
+        }
+        //if the characters value is defined and not empty
+        
+    else{
+      return "none";
+    }
+}
+  const baseUrl = window.location.href;
+  window.addEventListener('keydown', (event) => {if (event.key == "Backspace"){window.location.pathname="/";}});
+  window.addEventListener('load', getPlayerInformation);
+  async function getPlayerInformation(){
+      const res = await fetch(baseUrl,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          parcel: window.location.pathname.split('/')[2]
+        })
+      })
+      .then(res => {
+        if (!res.ok){
+          
+        }
+        return res.json();
+      });
+      console.log(res);
+      mainCharacter = getMainCharacterFromString(res.characters);
+      if(mainCharacter != "none" || mainCharacter != "none2" || res.characters != "null" || res.characters != ""){
+        document.getElementById("characterMainImage").src="/images/"+getMainCharacterFromString(res.characters)+"2.png";
+      }
+      else{
+        document.getElementById("characterMainImage").src="";
+      }
+      document.getElementById("stat1").innerText = "Sets Won: ";
+      // document.getElementById("stat2").innerText = "Rate of Online Tournaments: ";
+      document.getElementById("stat2").style.display = "none";
+      document.getElementById("bufferContainer").style.display = "none";
+      document.getElementById("statsContainer").style.outlineStyle = "groove";
+      document.getElementById("playerName").innerText = res.tag;
+      document.getElementById("playerCountry").innerText = res.country;
+      if(res.countryCode != null){
+        document.getElementById("playerCountryFlag").src = 'https://raw.githubusercontent.com/lipis/flag-icons/6784329d3fa1466fb8ef184ac69b021a45691271/flags/4x3/'+res.countryCode.toLowerCase()+'.svg';
+      }
+      if(document.getElementById("characterMainImage").src == window.location.origin+"/images/none2.png"){
+        document.getElementById("characterMainImage").style.display = "none";
+      }
+      document.getElementById("playerState").innerText = res.state;
+      document.getElementById("setCount").innerText = res.setsWonCount+"/"+res.setsPlayedCount+" ";
+      document.getElementById("winRate").innerText = "("+res.setsWinRate+"%)";
+      // document.getElementById("onlineTournaments").innerText = res.onlineTournamentsCount+"/"+res.totalTournamentsCount+" ";
+      // document.getElementById("onlineRate").innerText = "("+res.onlineTournamentsRate+"%)";
+      if (res.state == null){
+        res.state = "";
+      }
+      mainCharacter = mainCharacter[0].toUpperCase()+mainCharacter.slice(1);
+      if (mainCharacter == "Captainfalcon"){
+        mainCharacter = "Captain Falcon";
+      }
+      else if (mainCharacter == "Drmario"){
+        mainCharacter = "Dr. Mario"
+      }
+      else if (mainCharacter == "Younglink"){
+        mainCharacter = "Young Link"
+      }
+      else if (mainCharacter == "Iceclimbers"){
+        mainCharacter = "Ice Climbers"
+      }
+      else if (mainCharacter == "Mrgameandwatch"){
+        mainCharacter = "Mr. Game & Watch"
+      }
+      else if (mainCharacter == "Donkeykong"){
+        mainCharacter = "Donkey Kong"
+      }
+      
+      if (mainCharacter != "None" && mainCharacter != undefined && mainCharacter != null){
+        document.getElementById("description").innerText = res.state+" "+mainCharacter+" main ";
+        if (res.totalTournamentsCount == 1){
+          document.getElementById("description").innerText += " who has only entered 1 tournament. Go enter some more!"
+        }
+        else if(res.setsWinRate > 68 && res.totalTournamentsCount >= 30){
+          document.getElementById("description").innerText += ", a top player or one of the best in their region."
+        }
+        else if(res.setsWinRate > 58 && res.totalTournamentsCount >= 40){
+          document.getElementById("description").innerText += ", probably an Expert/Master level player or good in their region."
+        }
+        else if(res.setsWinRate > 58 && res.totalTournamentsCount <= 40){
+          document.getElementById("description").innerText += ", has a good winrate but doesn't have enough tournament history to confidently say it's accurate."
+        }
+        else if(res.setsWinRate > 50 && res.setsWinRate < 57 && res.totalTournamentsCount > 15){
+          document.getElementById("description").innerText += ", probably an Advanced level player."
+        }
+        else{
+          document.getElementById("description").innerText += "."
+        }
+        if(res.totalTournamentsCount > 1 && res.onlineTournamentsRate == 100){
+          document.getElementById("description").innerText += " Only enters online tournaments. Go touch some grass!"
+        }
+        else if(res.totalTournamentsCount > 1 && res.onlineTournamentsRate > 80){
+          document.getElementById("description").innerText += " Primarily enters online tournaments and occasionally enters in-person events. Go touch some grass!"
+        }
+        else if(res.totalTournamentsCount > 5 && res.onlineTournamentsRate > 60){
+          document.getElementById("description").innerText += " Primarily enters online tournaments and enters a good number of in-person events."
+        }
+        else if(res.totalTournamentsCount > 5 && res.onlineTournamentsRate > 40){
+          document.getElementById("description").innerText += " Primarily enters in-person tournaments and enters a good number of online events."
+        }
+        else if(res.totalTournamentsCount > 5 && res.onlineTournamentsRate > 20){
+          document.getElementById("description").innerText += " Primarily enters in-person tournaments and enters some online events."
+        }
+        else if(res.totalTournamentsCount > 5 && res.onlineTournamentsRate > 0){
+          document.getElementById("description").innerText += " Enters mostly in-person tournaments and occasionally enters online events."
+        }
+        else if(res.totalTournamentsCount > 1 && res.onlineTournamentsRate == 0){
+          document.getElementById("description").innerText += " Only enters in-person tournaments."
+        }
+      }
+      else if (mainCharacter == "None" && res.state != null){
+        if(res.state == ""){
+          document.getElementById("description").innerText = "Player who hasn't yet entered a tournament that tracks character info.";
+        }
+        else{
+          document.getElementById("description").innerText = "Player from "+res.state+" who hasn't yet entered a tournament that tracks character info.";
+        }
+      }
+      else if (mainCharacter == "None" && res.state == null){
+        document.getElementById("description").innerText = "A low profile player with very little information.";
+      }
+      if (res.all_tags.includes('", "')){
+        console.log(res.all_tags.length);
+        document.getElementById("description").innerText += " Has previously gone by";
+        document.getElementById("previousTags").innerText = " other tags.";
+        document.getElementById("previousTags").style.color = "#D7CEB2";
+        res.all_tags = res.all_tags.slice(1,-1);
+        document.getElementById("previousTags").title = res.all_tags;
+        document.getElementById("previousTags").onclick = () => {alert(res.all_tags)};
+      }
+      if(res.special != undefined){
+        document.getElementById("special").innerText = res.special;
+      }
+    }
+
+</script>
+</body>
+</html>

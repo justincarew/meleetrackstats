@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/main.css"/>
+<title>meleetrack</title>
+<link rel="icon" type="image/png" href="/images/favicon.png">
+</head>
+<body>
+
+<div class="body-wrapper" id="body-wrapper">
+<h1>meleetrack <img src="/images/smashball.png"><h2>by Justin Carew</h2></h1>
+<p>tracker for melee stats</p>
+<subtext>based on <a href="https://github.com/smashdata/ThePlayerDatabase">smashdata's The Player Database</a></subtext>
+<br>
+
+<form id="search" autocomplete="off">
+<div class="autocomplete-wrapper">
+  <input id="txt" onfocus="searchPlayer()" oninput="searchPlayer()" placeholder="search player" autofocus>
+  <ul class="autocomplete-list" id="autocomplete-list">
+    <li id="listItem1" onclick="window.location.href = '/stats/'+getElementById('button1').value" onmouseover="this.style.backgroundColor='#393D46'; getElementById('button1').style.backgroundColor='#393D46'" onmouseleave="this.style.backgroundColor='#70798C'; getElementById('button1').style.backgroundColor='#70798C'">
+      <button id="button1" onclick="window.location.href = '/stats/'+getElementById('button1').value"></button><img id="buttonImg1" onclick="window.location.href = '/stats/'+getElementById('button1').value">
+    </li>
+    <li id="listItem2" onclick="window.location.href = '/stats/'+getElementById('button2').value" onmouseover="this.style.backgroundColor='#393D46'; getElementById('button2').style.backgroundColor='#393D46'" onmouseleave="this.style.backgroundColor='#70798C'; getElementById('button2').style.backgroundColor='#70798C'">
+      <button id="button2" onclick="window.location.href = '/stats/'+getElementById('button2').value"></button><img id="buttonImg2" onclick="window.location.href = '/stats/'+getElementById('button2').value">
+    </li>
+    <li id="listItem3" onclick="window.location.href = '/stats/'+getElementById('button3').value" onmouseover="this.style.backgroundColor='#393D46'; getElementById('button3').style.backgroundColor='#393D46'" onmouseleave="this.style.backgroundColor='#70798C'; getElementById('button3').style.backgroundColor='#70798C'">
+      <button id="button3" onclick="window.location.href = '/stats/'+getElementById('button3').value"></button><img id="buttonImg3" onclick="window.location.href = '/stats/'+getElementById('button3').value">
+    </li>
+    <li id="listItem4" onclick="window.location.href = '/stats/'+getElementById('button4').value" onmouseover="this.style.backgroundColor='#393D46'; getElementById('button4').style.backgroundColor='#393D46'" onmouseleave="this.style.backgroundColor='#70798C'; getElementById('button4').style.backgroundColor='#70798C'">
+      <button id="button4" onclick="window.location.href = '/stats/'+getElementById('button4').value"></button><img id="buttonImg4" onclick="window.location.href = '/stats/'+getElementById('button4').value">
+    </li>
+    <li id="listItem5" onclick="window.location.href = '/stats/'+getElementById('button5').value" onmouseover="this.style.backgroundColor='#393D46'; getElementById('button5').style.backgroundColor='#393D46'" onmouseleave="this.style.backgroundColor='#70798C'; getElementById('button5').style.backgroundColor='#70798C'">
+      <button id="button5" onclick="window.location.href = '/stats/'+getElementById('button5').value"></button><img id="buttonImg5" onclick="window.location.href = '/stats/'+getElementById('button5').value">
+    </li>
+    <li id="resultHideListItem" onclick="clearSuggestionButtons()" onmouseover="this.style.backgroundColor='#393D46'" onmouseleave="this.style.backgroundColor='#70798C'">
+      <button id="resultHideButton" onclick="window.location.href = '/stats/'+getElementById('button1').value"></button><img id="resultHideImg" src="/images/uparrow.png">
+    </li>
+  </ul>
+</div>
+</form>
+</div>
+
+<script>
+    function displayInputText(){
+        let txt = document.getElementById("txt");
+        let txtValue = txt.value;
+        let result = document.getElementById("result");
+        result.innerText = txtValue;
+  }
+    function getCharacterFromResponse(res){
+      let character = "";
+        if(typeof res !== 'undefined'){
+          for(let i = 18; res.body[i] != "}"; i++){
+          if(res.body[i] == '"'){
+            continue;
+          }
+          character += res.body[i];
+        }
+        return character;
+      }
+    }
+    function clearSuggestionButtons(){
+      document.getElementById("resultHideListItem").style.visibility = "hidden";     
+        for(let i=0; i<=4; i++){
+          document.getElementById("button"+(i+1)).textContent = "";
+          document.getElementById("buttonImg"+(i+1)).src = "";
+          document.getElementById("buttonImg"+(i+1)).style.outline = "none"; 
+        }
+    }
+
+  let result = document.getElementById("result");
+  let input = document.getElementById("txt");
+  let lastSearch = "";
+  const baseUrl = 'http://localhost:5500/';
+  input.addEventListener('input', searchPlayer); 
+    async function searchPlayer(){
+      //console.log(txt.value);
+      if (txt.value == ''){
+        return;
+      }
+      const res = await fetch(baseUrl,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          parcel: txt.value
+        })
+      })
+      .then(res => {
+        if (!res.ok){
+          
+        }
+        return res.json();
+      });
+
+      document.getElementById("resultHideListItem").style.visibility = "visible";     
+      for(let i=0; i<(res.length); i+=3){
+        document.getElementById("listItem"+(i/3+1)).style.pointerEvents = "auto";
+        // console.log(i);
+        // console.log("/images/"+res[i+1]+".png");
+        if (typeof res[i] != 'undefined'){
+          document.getElementById('autocomplete-list').style.visibility='visible';
+          document.getElementById("button"+(i/3+1)).textContent = res[i];
+          document.getElementById("button"+(i/3+1)).value = res[i+2];
+          document.getElementById("button"+(i/3+1)).style.display = "block";
+          if(res[i+1] != "none" || res[i+1] != "null"){
+
+            document.getElementById("buttonImg"+(i/3+1)).src="/images/"+res[i+1]+".png";
+            // console.log("buttonImg"+(i/3+1)+" is set to /images/"+res[i+1]+".png");
+          }
+          else{
+            document.getElementById("buttonImg"+(i/3+1)).src="";
+            // document.getElementById("buttonImg"+(i/3+1)).outline = "none";
+            // document.getElementById("buttonImg"+(i/3+1)).display = "none";
+            // document.getElementById("buttonImg"+(i/3+1)).visibility = "hidden";
+          }
+        }
+        if (res[i] == null){
+          console.log(i/3+1);
+          document.getElementById("listItem"+(i/3+1)).style.pointerEvents = "none";
+          console.log(document.getElementById("listItem"+(i/3+1)).style.pointerEvents);
+        }
+      }
+
+      if (typeof res.body == 'undefined' || document.getElementById("txt").value == ""){
+        lastSearch = getCharacterFromResponse(res);
+        document.getElementById("characterMainImage").src="/images/"+getCharacterFromResponse(res)+".png";
+
+      }
+      else if((document.getElementById("result").innerText != "") || (document.getElementById("txt").value != getCharacterFromResponse(res))){
+        document.getElementById("result").innerText=getCharacterFromResponse(res);
+        lastSearch = getCharacterFromResponse(res);
+        document.getElementById("characterMainImage").src="/images/"+getCharacterFromResponse(res)+".png";
+
+    }
+      else{
+        document.getElementById("result").innerText = "";
+        lastSearch = getCharacterFromResponse(res);
+        document.getElementById("characterMainImage").src="/images/"+getCharacterFromResponse(res)+".png";
+
+    }
+      let searchResult = await res.json();
+      }
+      async function searchPlayerReturn(){
+      const res = await fetch(baseUrl,
+      {
+        method: 'GET'
+      })
+    }
+
+    input.addEventListener('keydown', goToSearchPage);
+      async function goToSearchPage(event){
+        if (event.key === "Enter"){
+          console.log('chungus');
+          event.preventDefault();
+          window.location.href = '/search/'+document.getElementById("txt").value;
+          return false;
+        }
+      }
+      console.log(res);
+</script>
+
+
+</body>
+</html>
