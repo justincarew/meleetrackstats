@@ -168,7 +168,9 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
   1726678: "Fastest Falcon in the West. (or... East)",
   50259 : "Probably the best player to play the game. Also 7ft tall.",
   2566899: "hey is there a limit to how much tuna you can eat?",
-  5080: "I'm moking I'm doking!"
+  5080: "I'm moking I'm doking!",
+  3201665: "A dad, with a thuggish past?",
+  519779: "Cool Sheik cat enjoyer."
   }
   sql = "SELECT * FROM players WHERE player_id IS "+req.params.playerID;
   playerInformation = "";
