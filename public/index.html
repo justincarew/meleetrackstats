@@ -49,8 +49,13 @@
   }
     function getCharacterFromResponse(res){
       let character = "";
-        if(typeof res !== 'undefined'){
+        if(typeof res == 'undefined' || typeof res.body == 'undefined'){
+          return character;
+        }
+        else{
           for(let i = 18; res.body[i] != "}"; i++){
+            console.log(i);
+            console.log(res.body[i]);
           if(res.body[i] == '"'){
             continue;
           }
@@ -121,25 +126,12 @@
           console.log(document.getElementById("listItem"+(i/3+1)).style.pointerEvents);
         }
       }
-
-      if (typeof res.body == 'undefined' || document.getElementById("txt").value == ""){
-        lastSearch = getCharacterFromResponse(res);
-        document.getElementById("characterMainImage").src="/images/"+getCharacterFromResponse(res)+".png";
-
-      }
-      else if((document.getElementById("result").innerText != "") || (document.getElementById("txt").value != getCharacterFromResponse(res))){
-        document.getElementById("result").innerText=getCharacterFromResponse(res);
-        lastSearch = getCharacterFromResponse(res);
-        document.getElementById("characterMainImage").src="/images/"+getCharacterFromResponse(res)+".png";
-
-    }
-      else{
+      if((document.getElementById("txt").value == getCharacterFromResponse(res))){
         document.getElementById("result").innerText = "";
         lastSearch = getCharacterFromResponse(res);
-        document.getElementById("characterMainImage").src="/images/"+getCharacterFromResponse(res)+".png";
 
     }
-      let searchResult = await res.json();
+      let searchResult = await res;
       }
       async function searchPlayerReturn(){
       const res = await fetch(baseUrl,
@@ -151,13 +143,11 @@
     input.addEventListener('keydown', goToSearchPage);
       async function goToSearchPage(event){
         if (event.key === "Enter"){
-          console.log('chungus');
           event.preventDefault();
           window.location.href = '/search/'+document.getElementById("txt").value;
           return false;
         }
       }
-      console.log(res);
 </script>
 
 
