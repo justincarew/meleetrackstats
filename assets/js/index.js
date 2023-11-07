@@ -222,7 +222,7 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
             if (err) return console.error(err.message);
             db.get(totalTournamentsQuery, [], (err, totalTournaments) => {
               if (err) return console.error(err.message);
-              if (typeof specialNote[JSON.parse(playerInformation.player_id)] != undefined){
+              if (typeof JSON.parse(playerInformation.player_id) != undefined && typeof specialNote[JSON.parse(playerInformation.player_id)] != undefined){
                 console.log("********Special person!********")
                 playerInformation.special = specialNote[JSON.parse(playerInformation.player_id)];
               }
