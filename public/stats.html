@@ -36,9 +36,6 @@
 
 
 <script>
-    console.log(window.location.href);
-    console.log(window.location.pathname);
-    console.log(window.location.pathname.split('/')[2]);
     function getCharacterFromResponse(res){
       let character = "";
         if(typeof res !== 'undefined'){
@@ -74,7 +71,6 @@
               indexOfMaxNum = i;
             }
           }
-          //console.log(row.charAt(i));
         }
         while(row.charAt(indexOfMaxNum) != "/"){
           if(row.charAt(indexOfMaxNum).match(/[a-z]/i)){
@@ -109,7 +105,6 @@
         }
         return res.json();
       });
-      console.log(res);
       mainCharacter = getMainCharacterFromString(res.characters);
       if(mainCharacter != "none" || mainCharacter != "none2" || res.characters != "null" || res.characters != ""){
         document.getElementById("characterMainImage").src="/images/"+getMainCharacterFromString(res.characters)+"2.png";
@@ -212,7 +207,6 @@
         document.getElementById("description").innerText = "A low profile player with very little information.";
       }
       if (res.all_tags.includes('", "')){
-        console.log(res.all_tags.length);
         document.getElementById("description").innerText += " Has previously gone by";
         document.getElementById("previousTags").innerText = " other tags.";
         document.getElementById("previousTags").style.color = "#D7CEB2";
