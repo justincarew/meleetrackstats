@@ -9,6 +9,3 @@ The website is currently deployed at meleetrack.onrender.com using Render. It ca
 ### Database:
 https://github.com/smashdata/ThePlayerDatabase \
 All information regarding the database can be found at the link above. Thank you skydereign and kldawson!
-
-### Issues:
-When locally hosted, the search bar on the main page is fully functional with an autocomplete list of suggestions based on what you've typed in the input field, but when accessed through Render's deployed version (meleetrack.onrender.com), everything but the autocomplete list works. There are also issues with the dataset including duplicate entries for certain players which is further explained at smashdata.gg/about .
