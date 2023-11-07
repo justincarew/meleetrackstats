@@ -170,7 +170,11 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
   2566899: "hey is there a limit to how much tuna you can eat?",
   5080: "I'm moking I'm doking!",
   3201665: "A dad, with a thuggish past?",
-  519779: "Cool Sheik cat enjoyer."
+  519779: "Cool Sheik cat enjoyer.",
+  26153: "Melee Illuminati member sent from NJ SSBM.",
+  159216: "One tall phobbed out man.",
+  213039: "Ultimate player.",
+  508804: "Humongous delicious behind the camera."
   }
   sql = "SELECT * FROM players WHERE player_id IS "+req.params.playerID;
   playerInformation = "";
@@ -247,7 +251,6 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
   });
 
   app.get('/search/:searchText', (req, res) => { // '/:dynamic' will make it so that the space after url/___ is a parameter where a variable can be passed, this can be the player's unique player_id to prevent duplicates, but the search on the frontend would be searching for their tag which would have duplicates and would be disambiguated with other information like location/mains
-    const { parcel } = req.body;
     res.sendFile(path.join(__dirname, '../../public/search.html'), null, function(err){
       if (err){
         res.writeHead(404);
