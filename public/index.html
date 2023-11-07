@@ -76,14 +76,13 @@
   let result = document.getElementById("result");
   let input = document.getElementById("txt");
   let lastSearch = "";
-  const baseUrl = 'http://localhost:5500/';
   input.addEventListener('input', searchPlayer); 
     async function searchPlayer(){
       //console.log(txt.value);
       if (txt.value == ''){
         return;
       }
-      const res = await fetch(baseUrl,
+      const res = await fetch(window.location,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -134,7 +133,7 @@
       let searchResult = await res;
       }
       async function searchPlayerReturn(){
-      const res = await fetch(baseUrl,
+      const res = await fetch(window.location,
       {
         method: 'GET'
       })
