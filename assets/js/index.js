@@ -66,9 +66,9 @@ app.get('/stats/', (req, res) => { // '/:dynamic' will make it so that the space
 
 app.post('/', (req, res) => { // '/:dynamic' will make it so that the space after url/___ is a parameter where a variable can be passed, this can be the player's unique player_id to prevent duplicates, but the search on the frontend would be searching for their tag which would have duplicates and would be disambiguated with other information like location/mains
   const { parcel } = req.body;
-  if (!parcel){
-    return res.status(400).send({status: 'failed'})
-  }
+  // if (!parcel){
+  //   return res.status(400).send({status: 'failed'})
+  // }
   //res.status(200).send({status: 'received'});
   let query = JSON.stringify(parcel+"%");
   var searchSuggestionTags = [];
@@ -245,10 +245,7 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
 
   app.get('/search/:searchText', (req, res) => { // '/:dynamic' will make it so that the space after url/___ is a parameter where a variable can be passed, this can be the player's unique player_id to prevent duplicates, but the search on the frontend would be searching for their tag which would have duplicates and would be disambiguated with other information like location/mains
     res.sendFile(path.join(__dirname, '../../public/search.html'), null, function(err){
-      if (err){
-        res.writeHead(404);
-        res.send('Page not found');
-      }
+      if (err) return console.error(err.message);
     });
   });
 
