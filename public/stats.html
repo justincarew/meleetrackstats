@@ -122,6 +122,9 @@
       if(res.countryCode != null){
         document.getElementById("playerCountryFlag").src = 'https://raw.githubusercontent.com/lipis/flag-icons/6784329d3fa1466fb8ef184ac69b021a45691271/flags/4x3/'+res.countryCode.toLowerCase()+'.svg';
       }
+      else{
+        document.getElementById("playerCountryFlag").style.display = 'none';
+      }
       if(document.getElementById("characterMainImage").src == window.location.origin+"/images/none2.png"){
         document.getElementById("characterMainImage").style.display = "none";
       }
