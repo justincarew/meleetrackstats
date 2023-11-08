@@ -120,10 +120,7 @@ app.post('/', (req, res) => { // '/:dynamic' will make it so that the space afte
 app.get('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that the space after url/___ is a parameter where a variable can be passed, this can be the player's unique player_id to prevent duplicates, but the search on the frontend would be searching for their tag which would have duplicates and would be disambiguated with other information like location/mains
   const { parcel } = req.body;
   res.sendFile(path.join(__dirname, '../../public/stats.html'), null, function(err){
-    if (err){
-      res.writeHead(404);
-      res.send('Page not found');
-    }
+    if (err) return console.error(err.message);
   });
 });
   
@@ -174,18 +171,14 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
   26153: "Melee Illuminati member sent from NJ SSBM.",
   159216: "One tall phobbed out man.",
   213039: "Ultimate player.",
-  508804: "Humongous delicious behind the camera."
+  508804: "Humongous delicious behind the camera.",
+  27491: "Shadow leader of RU weeklies, defeater of Zain."
   }
   sql = "SELECT * FROM players WHERE player_id IS "+req.params.playerID;
   playerInformation = "";
   playerInformation.sets= new Array(1);
     db.get(sql, [], (err, row) => {
-      if (err){
-        res.writeHead(404);
-        res.write('User not found');
-        res.end();
-        return;
-      } 
+      if (err) return console.error(err.message);
       playerInformation = row;
       if(playerInformation.country != null && playerInformation.country.length > 2){
         playerInformation.countryCode=countries.getAlpha2Code(playerInformation.country, "en"); // converts country information to an image of its respective flag
