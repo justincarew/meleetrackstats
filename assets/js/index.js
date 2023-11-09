@@ -172,7 +172,11 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
   159216: "One tall phobbed out man.",
   213039: "Ultimate player.",
   508804: "Humongous delicious behind the camera.",
-  27491: "Shadow leader of RU weeklies, defeater of Zain."
+  27491: "Shadow leader of RU weeklies, defeater of Zain.",
+  2188548: "Current VP of Rutgers Melee.",
+  21772: "Check out his music and stream!",
+  424553: "Inventor of the Doink Drop.",
+  5630: "Goat TO."
   }
   sql = "SELECT * FROM players WHERE player_id IS "+req.params.playerID;
   playerInformation = "";
