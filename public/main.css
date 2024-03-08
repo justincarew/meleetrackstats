@@ -47,7 +47,7 @@
 
 .modal-header {
     padding: 5px 16px;
-    background-color: #4f4537;
+    background-color: #B10000;
     color: white;
   }
   
@@ -55,11 +55,11 @@
   
 .modal-content {
     position: relative;
-    background-color: #867760;
+    background-color: #EE4B2B;
     margin: auto;
     padding: 0%;
     border: 1px solid #888;
-    height: 8em;
+    height: 18em;
     width: 100%;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   }
