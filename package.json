@@ -10,7 +10,7 @@
   "author": "justincarew",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2",
+    "express": "^4.21.2",
     "i18n-iso-countries": "^7.7.0",
     "sql.js": "^1.8.0",
     "sqlite3": "^5.1.6"
