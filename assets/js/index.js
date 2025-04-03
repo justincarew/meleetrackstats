@@ -33,7 +33,6 @@ function getMainCharacterFromString(row){
               indexOfMaxNum = i;
             }
           }
-          //console.log(row.charAt(i));
         }
         while(row.charAt(indexOfMaxNum) != "/"){
           if(row.charAt(indexOfMaxNum).match(/[a-z]/i)){
@@ -74,8 +73,6 @@ app.post('/', (req, res) => { // '/:dynamic' will make it so that the space afte
   var searchSuggestionTags = [];
   var searchSuggestionIDs = [];
   sql = "SELECT player_id, characters, tag FROM players WHERE tag LIKE "+query+" AND tag IS NOT player_id LIMIT "+5;
-  //console.log(sql);
-  console.log(parcel);
     db.each(sql, [], (err, row) => { 
       if (err) return console.error(err.message);
       var max = 0;
@@ -109,7 +106,6 @@ app.post('/', (req, res) => { // '/:dynamic' will make it so that the space afte
           searchSuggestionsTagsArray[(i+1)*3-1] = '';
         }
       }
-      console.log(JSON.stringify(searchSuggestionsTagsArray));
       res.write(JSON.stringify(searchSuggestionsTagsArray));
       res.end();
     });
@@ -126,7 +122,6 @@ app.get('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that 
   
 app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that the space after url/___ is a parameter where a variable can be passed, this can be the player's unique player_id to prevent duplicates, but the search on the frontend would be searching for their tag which would have duplicates and would be disambiguated with other information like location/mains
   const { parcel } = req.body;
-  console.log(parcel);
   const specialNote = {1556238: "The creator of this website. Follow my socials!", 
   53498: "Best friend of the creator by day, expert Rutgers Fox by night.", 
   768215: "Best friend of the creator by day, professional beatmania IIDX player by night.",
@@ -202,14 +197,14 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
           if(JSON.parse(row.placings)[i+1] != undefined){
             onlineTournamentsQuery+="(key LIKE '%"+JSON.parse(row.placings)[i].key+"%' AND online IS 1) OR ";
            }
-           else{
+           else {
             onlineTournamentsQuery+="(key LIKE '%"+JSON.parse(row.placings)[i].key+"%' AND online IS 1)";
            }
            i=i+1;
         }
         i=0;
         while(JSON.parse(row.placings)[i] != undefined || JSON.parse(row.placings)[i] != null){
-          if(JSON.parse(row.placings)[i+1] != undefined){
+          if(JSON.parse(row.placings)[i+1] != undefined) {
             totalTournamentsQuery+="(key LIKE '%"+JSON.parse(row.placings)[i].key+"%') OR ";
            }
            else{
@@ -235,7 +230,6 @@ app.post('/stats/:playerID', (req, res) => { // '/:dynamic' will make it so that
                 playerInformation.onlineTournamentsRate = (playerInformation.onlineTournamentsCount*100.00/playerInformation.totalTournamentsCount).toFixed(2);
                 playerInformation.setsWonCount = parseInt(setsWon[0]);
                 playerInformation.setsWinRate = (playerInformation.setsWonCount*100.00/playerInformation.setsPlayedCount).toFixed(2);
-                console.log(playerInformation);
                 res.write(JSON.stringify(playerInformation));
                 res.end();
             });
