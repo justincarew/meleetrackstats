@@ -7,7 +7,7 @@ License:
 https://creativecommons.org/licenses/by-nc-nd/4.0/
 
 ### How to use:
-The website is no longer available at meleetrack.onrender.com. It can still be locally hosted by downloading this directory, downloading the most recent .db file from below and placing it in /database, building with ```npm install```, then starting with ```npm run dev```. The source code is available for others to make derivative works under the license above.
+The website is available at https://www.meleetrack.onrender.com. It can still be locally hosted by downloading this directory, downloading the most recent .db file from below and placing it in /database, building with ```npm install```, then starting with ```npm run dev```. The source code is available for others to make derivative works under the license above.
 
 ### Database:
 https://github.com/smashdata/ThePlayerDatabase \
